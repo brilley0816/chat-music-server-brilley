@@ -48,13 +48,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="cn.edu.bjtu.brilley.domain.Consumer">
+  <insert id="addUser" parameterType="cn.edu.bjtu.brilley.domain.Consumer">
     insert into consumer (id, username, password,
                           sex, phone_num, email, birth,
                           introduction, location, avator,
                           create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT}, #{phoneNum,jdbcType=CHAR}, #{email,jdbcType=CHAR}, #{birth,jdbcType=TIMESTAMP}, #{introduction,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{avator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
+
   <insert id="insertSelective" parameterType="cn.edu.bjtu.brilley.domain.Consumer">
     insert into consumer
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -190,4 +191,18 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="existPhoneNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    from consumer
+    where phone_num = #{phoneNum, jdbcType=VARCHAR}
+  </select>
+
+  <select id="getUserId" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select id
+    from consumer
+    where username = #{username, jdbcType=VARCHAR}
+  </select>
+
+
 </mapper>

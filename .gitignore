@@ -3,7 +3,7 @@ target/
 img/
 logs/
 song/
-avatorImages/
+img/avatorImages/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

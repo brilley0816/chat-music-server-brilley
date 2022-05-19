@@ -51,4 +51,29 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     @Override
     public List<Consumer> userOfId(Integer id) {return consumerMapper.userOfId(id);}
+
+    @Override
+    public boolean deleteUser(Integer id) {
+        return consumerMapper.deleteUser(id) > 0;
+    }
+
+    @Override
+    public boolean updateUserMsg(Consumer consumer) {
+        return consumerMapper.updateUserMsg(consumer) > 0;
+    }
+
+    @Override
+    public boolean updatePassword(Consumer consumer) {
+        return consumerMapper.updatePassword(consumer) > 0;
+    }
+
+    @Override
+    public boolean updateUserAvator(Consumer consumer) {
+        return consumerMapper.updateUserAvator(consumer) > 0;
+    }
+
+    @Override
+    public Integer getIdbyName(String username) {
+        return consumerMapper.getUserId(username);
+    }
 }

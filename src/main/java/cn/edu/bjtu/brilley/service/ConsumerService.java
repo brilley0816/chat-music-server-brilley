@@ -23,4 +23,14 @@ public interface ConsumerService {
     List<Consumer> loginStatus(String username);
 
     List<Consumer> userOfId(Integer id);
+
+    boolean updateUserMsg(Consumer consumer);
+
+    boolean updateUserAvator(Consumer consumer);
+
+    boolean updatePassword(Consumer consumer);
+
+    boolean deleteUser(Integer id);
+
+    Integer getIdbyName(String username);
 }

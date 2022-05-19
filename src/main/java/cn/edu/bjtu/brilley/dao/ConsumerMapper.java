@@ -80,4 +80,6 @@ public interface ConsumerMapper {
     List<Consumer> userOfId(Integer id);
 
     List<Consumer> loginStatus(String username);
+
+    Integer getUserId(String username);
 }
