@@ -170,4 +170,12 @@
       others = #{others,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getChatList" resultMap="BaseResultMap">
+    select *
+    from chats
+    where sessionId = #{param1} and updatedAt &lt; #{param2}
+    order by updatedAt desc limit 30
+  </select>
+
 </mapper>

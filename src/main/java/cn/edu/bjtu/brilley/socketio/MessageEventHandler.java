@@ -41,6 +41,7 @@ public class MessageEventHandler {
         UUID sessionId = client.getSessionId();
         clientCache.saveClient(userId, sessionId, client);
 
+
         //初始登陆就进行websocket连接，在后台发送消息给客户端；
         //前端可以在state值保存一个数，在点击聊天界面时，如果状态为真则直接进行对话，否则重新连接！当然，默认进入界面是连接成功的
         client.sendEvent("brilley","你好，我是服务器，你已经连接成功了！");

@@ -20,12 +20,12 @@ public class SessionsServiceImpl implements SessionsService {
     private SessionsMapper sessionsMapper;
 
     @Override
-    public List<Sessions> userSessions(String userId, String lastTime) {
+    public List<Sessions> userSessions(Integer userId, String lastTime) {
         return sessionsMapper.getSessionList(userId, lastTime);
     }
 
     @Override
-    public int updateSessions(Integer userId1, Integer userId2, String content, int type) {
+    public int updateSessions(Integer userId1, Integer userId2, String content, Integer type) {
         //系统通知
         if(type == 0) {
             //为了区别是不是首次会话，要先判断会话是不是已经存在过
@@ -39,18 +39,18 @@ public class SessionsServiceImpl implements SessionsService {
         return -1;
     }
     @Override
-    public int createSessions(Integer userId1, Integer userId2, String content, int type) {
-        long nowTime = System.currentTimeMillis();
-        Integer sessionNums = (int) System.currentTimeMillis() % 560000;
+    public int createSessions(Integer userId1, Integer userId2, String content, String updatedAt, Integer type) {
+        String time = String.valueOf(System.currentTimeMillis());
         Sessions sessions = new Sessions();
-        sessions.setId(sessionNums);
+        sessions.setSessionid(time.substring(4,12));
         sessions.setUserid(userId1);
         sessions.setReceiverid(userId2);
         sessions.setLastchat(content);
-        sessions.setUpdatedat(String.valueOf(nowTime));
-        //sessions.setRead();
+        sessions.setUpdatedat(time);
+        sessions.setMsgread(0);
+        sessions.setMsgtype(type);
         if (sessionsMapper.createSession(sessions) != 0)
-            return sessionNums;
+            return 2;
         return -1;
     }
 }

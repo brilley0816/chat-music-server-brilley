@@ -6,6 +6,7 @@ import cn.edu.bjtu.brilley.common.SuccessMessage;
 import cn.edu.bjtu.brilley.common.WarningMessage;
 import cn.edu.bjtu.brilley.constant.Constants;
 import cn.edu.bjtu.brilley.domain.Consumer;
+import cn.edu.bjtu.brilley.service.SessionsService;
 import cn.edu.bjtu.brilley.service.impl.ConsumerServiceImpl;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
@@ -41,6 +42,9 @@ public class ConsumerController {
     private static final Logger logger = LogManager.getLogger(ConsumerController.class);
     @Autowired
     private ConsumerServiceImpl consumerService;
+
+    @Autowired
+    private SessionsService sessionsService;
 
     @Configuration
     public static class MyPicConfig implements WebMvcConfigurer {
@@ -105,10 +109,13 @@ public class ConsumerController {
         consumer.setAvator(avator);
         consumer.setCreateTime(new Date());
         consumer.setUpdateTime(new Date());
-
         try {
             boolean res = consumerService.addUser(consumer);
-            if (res) {
+            int userId = consumerService.getIdbyName(username);
+            String timestamps = String.valueOf(new Date().getTime());
+            int sessionId = sessionsService.createSessions(userId, -1, "", timestamps, 2);
+            System.out.println(sessionId);
+            if (res && sessionId != -1) {
                 return new SuccessMessage<Null>("注册成功").getMessage();
             } else {
                 return new ErrorMessage("注册失败").getMessage();
