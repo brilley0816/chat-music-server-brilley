@@ -6,8 +6,10 @@ import cn.edu.bjtu.brilley.common.SuccessMessage;
 import cn.edu.bjtu.brilley.constant.Constants;
 import cn.edu.bjtu.brilley.domain.SongList;
 import cn.edu.bjtu.brilley.service.impl.SongListServiceImpl;
+import org.apache.catalina.manager.util.SessionUtils;
 import org.apache.commons.lang3.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -77,7 +80,10 @@ public class SongListController {
 
     // 返回所有歌单
     @RequestMapping(value = "/songList", method = RequestMethod.GET)
-    public Object allSongList() {
+    public Object allSongList(HttpSession session) {
+        //未登陆的话会报空指针异常，所以要在保证已登陆的请求控制器中才打印此数值
+//        String userId = session.getAttribute("userId").toString();
+//        System.out.println("userId is: " + userId);
         return new SuccessMessage<List<SongList>>(null, songListService.allSongList()).getMessage();
     }
 
@@ -91,9 +97,8 @@ public class SongListController {
 
     // 返回指定类型的歌单
     @RequestMapping(value = "/songList/style/detail", method = RequestMethod.GET)
-    public Object songListOfStyle(HttpServletRequest req) {
+    public Object songListOfStyle(HttpServletRequest req, HttpSession session) {
         String style = req.getParameter("style").trim();
-
         return new SuccessMessage<List<SongList>>(null, songListService.likeStyle('%' + style + '%')).getMessage();
     }
 

@@ -9,29 +9,29 @@ import java.io.Serializable;
 public class ChatObject implements Serializable {
 
     private String username;
-    private String message;
+    private String data;
 
     public ChatObject() {}
 
-    public ChatObject(String username, String message) {
+    public ChatObject(String username, String data) {
         this.username = username;
-        this.message = message;
+        this.data = data;
     }
     public String getUserName() {
         return username;
     }
-    public String getMessage() {
-        return message;
+    public String getData() {
+        return data;
     }
-    public void setMessage(String message) {
-        this.message = message;
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
         return "ChatDataEntity{" +
                 "username11='" + username + '\'' +
-                ", message11='" + message + '\'' +
+                ", data11='" + data + '\'' +
                 '}';
     }
 }
