@@ -178,4 +178,15 @@
     order by updatedAt desc limit 30
   </select>
 
+  <insert id="addChat" parameterType="cn.edu.bjtu.brilley.domain.Chats" >
+    insert into chats (id, sessionId, senderId,
+    receiverId, content, type,
+    sort, updatedAt, others
+    )
+    values (#{id,jdbcType=INTEGER}, #{sessionid,jdbcType=VARCHAR}, #{senderid,jdbcType=INTEGER},
+    #{receiverid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+    #{sort,jdbcType=INTEGER}, #{updatedat,jdbcType=VARCHAR}, #{others,jdbcType=VARCHAR}
+    )
+  </insert>
+
 </mapper>

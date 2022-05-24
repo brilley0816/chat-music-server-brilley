@@ -37,6 +37,7 @@
     select *
     from consumer
     where username = #{username,jdbcType=INTEGER}
+
   </select>
   <select id="allUser" resultMap="BaseResultMap">
     select *
@@ -204,5 +205,10 @@
     where username = #{username, jdbcType=VARCHAR}
   </select>
 
+  <select id="existUserById" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select count(*)
+    from consumer
+    where id = #{id, jdbcType=INTEGER}
+  </select>
 
 </mapper>

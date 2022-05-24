@@ -162,11 +162,79 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="getSessionList" resultMap="BaseResultMap">
-    select *
+<!--  <select id="getSessionList" resultMap="BaseResultMap">-->
+<!--    select *-->
+<!--    from sessions-->
+<!--    where userId = #{param1} and updatedAt &lt; #{param2}-->
+<!--    order by updatedAt desc limit 20-->
+<!--  </select>-->
+
+
+  <select id="isSessionExist" resultType="java.lang.Integer">
+    select count(*)
     from sessions
-    where userId = #{param1} and updatedAt &lt; #{param2}
+    where userId = #{param1} and  receiverId = #{param2}
+  </select>
+
+  <update id="updateSession" parameterType="cn.edu.bjtu.brilley.domain.Sessions">
+    update sessions
+    <set>
+      <if test="lastchat != null">
+        lastChat = #{lastchat,jdbcType=VARCHAR},
+      </if>
+      <if test="msgtype != null">
+        msgtype = #{msgtype,jdbcType=INTEGER},
+      </if>
+      <if test="msgread != null">
+        msgread = #{msgread,jdbcType=INTEGER},
+      </if>
+      <if test="updatedat != null">
+        updatedAt = #{updatedat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid, jdbcType=INTEGER} and receiverId = #{receiverid, jdbcType=INTEGER}
+  </update>
+
+  <select id="getSessionId" resultType="java.lang.String">
+    select sessionId
+    from sessions
+    where userId = #{param1} and  receiverId = #{param2}
+  </select>
+
+  <resultMap id="sessionConsumerMap" type="cn.edu.bjtu.brilley.domain.Sessions">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sessionId" jdbcType="VARCHAR" property="sessionid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="receiverId" jdbcType="INTEGER" property="receiverid" />
+    <result column="lastChat" jdbcType="VARCHAR" property="lastchat" />
+    <result column="msgtype" jdbcType="INTEGER" property="msgtype" />
+    <result column="msgread" jdbcType="INTEGER" property="msgread" />
+    <result column="updatedAt" jdbcType="VARCHAR" property="updatedat" />
+    <!-- 配置封装 Consumer 的内容 -->
+    <association property="consumer" column="id" javaType="cn.edu.bjtu.brilley.domain.Consumer">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="sex" jdbcType="TINYINT" property="sex" />
+      <result column="phone_num" jdbcType="CHAR" property="phoneNum" />
+      <result column="email" jdbcType="CHAR" property="email" />
+      <result column="birth" jdbcType="TIMESTAMP" property="birth" />
+      <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+      <result column="location" jdbcType="VARCHAR" property="location" />
+      <result column="avator" jdbcType="VARCHAR" property="avator" />
+    </association>
+  </resultMap>
+
+  <select id="getSessionList"  resultMap="sessionConsumerMap">
+    select consumer.*, sessions.sessionid, sessions.userid, sessions.receiverid, sessions.lastchat, sessions.msgtype, sessions.msgread, sessions.updatedat
+    from sessions, consumer
+    where userId = #{param1} and updatedAt &lt; #{param2} and sessions.receiverId = consumer.id
     order by updatedAt desc limit 20
   </select>
+
+    <select id="getSessionById" resultMap="BaseResultMap">
+      select *
+      from sessions
+      where userId = #{param1} and receiverId = #{param2}
+    </select>
 
 </mapper>

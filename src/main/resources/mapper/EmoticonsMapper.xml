@@ -111,4 +111,17 @@
       createdAt = #{createdat,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getEmoticonList" resultMap="BaseResultMap">
+    select *
+    from emoticons
+    where userId = #{param1}
+  </select>
+
+  <insert id="addEmoticon" parameterType="cn.edu.bjtu.brilley.domain.Emoticons">
+    insert into emoticons (id, userId, src,createdAt)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{src,jdbcType=VARCHAR},
+            #{createdat,jdbcType=VARCHAR})
+  </insert>
+
 </mapper>

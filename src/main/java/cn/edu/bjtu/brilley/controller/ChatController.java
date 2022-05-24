@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Brilley
@@ -25,11 +26,20 @@ public class ChatController {
     private ChatService chatService;
 
     @RequestMapping(value = "/chats/get_chat_list", method = RequestMethod.GET)
-    public Object getChatList(HttpServletRequest req, HttpSession session) {
+    public Object getChatList(HttpServletRequest req) {
+        System.out.println("请求chat_list");
         String lastTime = req.getParameter("lastTime").trim();
         String sessionId = req.getParameter("sessionId").trim();
-        if (lastTime != null && sessionId != null)
-            return new SuccessMessage<List<Chats>>(null, chatService.getChatList(sessionId, lastTime)).getMessage();
-        return new WarningMessage("获取聊天记录失败").getMessage();
+        System.out.println("param lastTime is: " + lastTime + " ---  param sessionId is: " + sessionId);
+
+        //如果sessionId为空，或者不全是数字，"^-?\\d{1,9}$", 长度一到九的数字
+        Pattern pattern = Pattern.compile("^\\d{1,9}$");
+        if (!pattern.matcher(sessionId).matches())
+            return new WarningMessage("请求参数sessionId不合法，获取聊天记录失败").getMessage();
+
+        if (lastTime.equals(""))
+            lastTime = String.valueOf(System.currentTimeMillis());
+
+        return new SuccessMessage<List<Chats>>(null, chatService.getChatList(sessionId, lastTime)).getMessage();
     }
 }

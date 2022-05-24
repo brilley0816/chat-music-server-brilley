@@ -12,4 +12,6 @@ import java.util.List;
 public interface ChatService {
 
     List<Chats> getChatList(String sessionId, String lastTime);
+
+    boolean addChat(Chats chats);
 }

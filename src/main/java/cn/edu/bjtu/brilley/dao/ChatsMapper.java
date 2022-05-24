@@ -56,4 +56,6 @@ public interface ChatsMapper {
     int updateByPrimaryKey(Chats record);
 
     List<Chats> getChatList(String sessionId, String lastTime);
+
+    int addChat(Chats chats);
 }

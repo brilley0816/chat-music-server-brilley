@@ -111,4 +111,18 @@
       createdAt = #{createdat,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getNotificationList" resultMap="BaseResultMap">
+    select *
+    from notifications
+    where userId = #{param1} and createdAt &lt; #{param2}
+    order by createdAt desc limit 30
+  </select>
+
+  <insert id="addNotification" parameterType="cn.edu.bjtu.brilley.domain.Notifications">
+    insert into notifications (id, userId, type,createdAt)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
+    #{createdat,jdbcType=VARCHAR})
+  </insert>
+
 </mapper>

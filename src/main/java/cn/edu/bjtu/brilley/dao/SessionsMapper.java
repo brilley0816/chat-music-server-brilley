@@ -87,4 +87,9 @@ public interface SessionsMapper {
      */
     int updateSession(Sessions sessions);
 
+    int isSessionExist(Integer userId1, Integer userId2);
+
+    String getSessionId(Integer userId1, Integer userId2);
+
+    List<Sessions> getSessionById(Integer userId, Integer userId2);
 }

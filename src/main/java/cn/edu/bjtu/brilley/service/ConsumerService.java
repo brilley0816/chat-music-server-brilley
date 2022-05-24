@@ -33,4 +33,6 @@ public interface ConsumerService {
     boolean deleteUser(Integer id);
 
     Integer getIdbyName(String username);
+
+    boolean existUserById(Integer userId);
 }

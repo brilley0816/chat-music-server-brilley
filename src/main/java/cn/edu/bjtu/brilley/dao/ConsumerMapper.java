@@ -81,5 +81,7 @@ public interface ConsumerMapper {
 
     List<Consumer> loginStatus(String username);
 
-    Integer getUserId(String username);
+    int getUserId(String username);
+
+    int existUserById(Integer id);
 }

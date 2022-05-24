@@ -76,4 +76,9 @@ public class ConsumerServiceImpl implements ConsumerService {
     public Integer getIdbyName(String username) {
         return consumerMapper.getUserId(username);
     }
+
+    @Override
+    public boolean existUserById(Integer userId) {
+        return consumerMapper.existUserById(userId) > 0;
+    }
 }

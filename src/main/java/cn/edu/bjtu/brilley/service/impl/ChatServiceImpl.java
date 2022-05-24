@@ -21,4 +21,9 @@ public class ChatServiceImpl implements ChatService {
     public List<Chats> getChatList(String sessionId, String lastTime) {
         return chatsMapper.getChatList(sessionId, lastTime);
     }
+
+    @Override
+    public boolean addChat(Chats chats) {
+        return chatsMapper.addChat(chats) > 0;
+    }
 }

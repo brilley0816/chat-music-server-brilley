@@ -17,7 +17,11 @@ public interface SessionsService {
      * 创建会话，返回会话uuid
      * @return
      */
-    int createSessions(Integer userId1, Integer userId2, String content, String updatedAt, Integer type);
+    String createSessions(Integer userId1, Integer userId2, String content, String updatedAt, Integer type);
 
-    int updateSessions(Integer userId1, Integer userId2, String content, Integer type);
+    boolean updateSessions(Integer userId1, Integer userId2, String content, Integer type);
+
+    boolean isSessionExist(Integer userId1, Integer userId2);
+
+    String getSessionId(Integer userId1, Integer userId2);
 }

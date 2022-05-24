@@ -6,8 +6,8 @@ import cn.edu.bjtu.brilley.common.SuccessMessage;
 import cn.edu.bjtu.brilley.common.WarningMessage;
 import cn.edu.bjtu.brilley.constant.Constants;
 import cn.edu.bjtu.brilley.domain.Consumer;
+import cn.edu.bjtu.brilley.service.ConsumerService;
 import cn.edu.bjtu.brilley.service.SessionsService;
-import cn.edu.bjtu.brilley.service.impl.ConsumerServiceImpl;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 import org.apache.log4j.LogManager;
@@ -29,6 +29,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Brilley
@@ -41,7 +42,7 @@ public class ConsumerController {
 
     private static final Logger logger = LogManager.getLogger(ConsumerController.class);
     @Autowired
-    private ConsumerServiceImpl consumerService;
+    private ConsumerService consumerService;
 
     @Autowired
     private SessionsService sessionsService;
@@ -113,9 +114,9 @@ public class ConsumerController {
             boolean res = consumerService.addUser(consumer);
             int userId = consumerService.getIdbyName(username);
             String timestamps = String.valueOf(new Date().getTime());
-            int sessionId = sessionsService.createSessions(userId, -1, "", timestamps, 2);
-            System.out.println(sessionId);
-            if (res && sessionId != -1) {
+            String sessionId = sessionsService.createSessions(userId, -1, "", timestamps, 2);
+            System.out.println("创建了 sessionId: " + sessionId);
+            if (res && !sessionId.equals("")) {
                 return new SuccessMessage<Null>("注册成功").getMessage();
             } else {
                 return new ErrorMessage("注册失败").getMessage();
@@ -155,11 +156,14 @@ public class ConsumerController {
 
     @RequestMapping(value = "/user/detail", method = RequestMethod.GET)
     public Object userOfId(HttpServletRequest req) {
-        String id = req.getParameter("id");
-        System.out.println(req);
+        String userIdStr = req.getParameter("userId").trim();
+        Pattern pattern = Pattern.compile("^\\d{1,9}$");
+        if (!pattern.matcher(userIdStr).matches())
+            return new WarningMessage("请求参数userId不合法，获取聊天记录失败").getMessage();
+        Integer userId = new Integer(userIdStr);
         //return consumerService.userOfId(Integer.parseInt(id));
         //return new SuccessMessage<List<Consumer>>("获取成功", consumerService.userOfId(Integer.parseInt(id)));//这里就是因为没有加上getMessage，返回的是SuccessMessage Object,而不是json对象
-        return new SuccessMessage<List<Consumer>>("获取成功", consumerService.userOfId(Integer.parseInt(id))).getMessage();
+        return new SuccessMessage<List<Consumer>>("获取成功", consumerService.userOfId(userId)).getMessage();
     }
     /**
      * 删除用户
